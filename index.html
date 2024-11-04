@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Groundwater Data Platform</title>
+</head>
+<body>
+    <h1>Welcome to the Groundwater Data Platform</h1>
+
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <h2>Upload File</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileUpload" required>
+        <button type="submit">Upload File</button>
+    </form>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, phone })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        });
+
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = document.getElementById('fileUpload').files[0];
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+</body>
+</html>
